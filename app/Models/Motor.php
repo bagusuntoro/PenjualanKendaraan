@@ -12,9 +12,12 @@ class Motor extends Model
     protected $table = 'motors';
 
     protected $fillable = [
+        'nama_motor',
         'mesin',
         'tipe_suspensi',
         'tipe_transmisi',
+        'status',
+        'tanggal_terjual',
         'id_kendaraan'
     ];
 

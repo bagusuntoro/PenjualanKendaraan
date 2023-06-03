@@ -2,18 +2,19 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PenjualanKendaraanController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::get('list-kendaraan', [PenjualanKendaraanController::class,'listAllKendaraan']);
+Route::get('list-mobil', [PenjualanKendaraanController::class,'listKendaraanMobil']);
+Route::get('list-motor', [PenjualanKendaraanController::class,'listKendaraanMotor']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::get('beli-mobil/{id}', [PenjualanKendaraanController::class,'penjualanMobil']);
+Route::get('beli-motor/{id}', [PenjualanKendaraanController::class,'penjualanMotor']);
+
+Route::get('laporan-penjualan-mobil', [PenjualanKendaraanController::class,'laporanPenjualanMobil']);
+Route::get('laporan-penjualan-motor', [PenjualanKendaraanController::class,'laporanPenjualanMotor']);
+
+Route::post('kendaraan', [PenjualanKendaraanController::class,'menambahkanKendaraan']);
+Route::post('mobil', [PenjualanKendaraanController::class,'menambahkanMobil']);
+Route::post('motor', [PenjualanKendaraanController::class,'menambahkanMotor']);
