@@ -87,6 +87,37 @@ class PenjualanKendaraanController extends Controller
         return $this->formatApiResponse($this->penjualanKendaraanService->menambahkanMotor($request), 201);
     }
 
+    public function detailKendaraan($id)
+    {
+        return $this->formatApiResponse($this->penjualanKendaraanService->detailKendaraan($id), 200);   
+    }
+    public function detailMobil($id)
+    {
+        return $this->formatApiResponse($this->penjualanKendaraanService->detailMobil($id), 200);   
+    }
+    public function detailMotor($id)
+    {
+        return $this->formatApiResponse($this->penjualanKendaraanService->detailMotor($id), 200);   
+    }
+
+    public function updateKendaraan(Request $request, $id)
+    {
+        return $this->formatApiResponse($this->penjualanKendaraanService->updateKendaraan($request, $id), 200);   
+    }
+
+    public function updateMobil(Request $request, $id)
+    {
+        return $this->formatApiResponse($this->penjualanKendaraanService->updateMobil($request, $id), 200);   
+    }
+    
+    public function updateMotor(Request $request, $id)
+    {
+        return $this->formatApiResponse($this->penjualanKendaraanService->updateMotor($request, $id), 200);   
+    }
+
+
+
+    // format api dengan dinamis data dan status code
     private function formatApiResponse($data, $statusCode)
     {
         if ($data) {
