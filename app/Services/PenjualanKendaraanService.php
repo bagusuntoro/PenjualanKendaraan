@@ -113,6 +113,15 @@ class PenjualanKendaraanService
         }
     }
 
+    public function deleteMobil($id)
+    {
+        return $this->penjualanKendaraanRepository->deleteMobil($id);
+    }
+
+    public function deleteMotor($id)
+    {
+        return $this->penjualanKendaraanRepository->deleteMotor($id);
+    }
 
 
     // untuk ngeset status kendaraan dan tanggal dibeli

@@ -115,6 +115,15 @@ class PenjualanKendaraanController extends Controller
         return $this->formatApiResponse($this->penjualanKendaraanService->updateMotor($request, $id), 200);   
     }
 
+    public function deleteMobil($id)
+    {
+        return $this->formatApiResponse($this->penjualanKendaraanService->deleteMobil($id), 200);
+    }
+
+    public function deleteMotor($id)
+    {
+        return $this->formatApiResponse($this->penjualanKendaraanService->deleteMotor($id), 200);
+    }
 
 
     // format api dengan dinamis data dan status code

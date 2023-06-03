@@ -15,6 +15,9 @@ Route::put('update-kendaraan/{id}', [PenjualanKendaraanController::class,'update
 Route::put('update-mobil/{id}', [PenjualanKendaraanController::class,'updateMobil']);
 Route::put('update-motor/{id}', [PenjualanKendaraanController::class,'updateMotor']);
 
+Route::delete('delete-mobil/{id}', [PenjualanKendaraanController::class,'deleteMobil']);
+Route::delete('delete-motor/{id}', [PenjualanKendaraanController::class,'deleteMotor']);
+
 
 
 
