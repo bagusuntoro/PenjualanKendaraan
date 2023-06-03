@@ -13,13 +13,16 @@ class CreateMotorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('motors', function (Blueprint $table) {
-            $table->id();
-            $table->string('mesin');
-            $table->string('tipe_suspensi');
-            $table->string('tipe_transmisi');
-            $table->foreignId('kendaraan_id')->constrained('kendaraans');
-            $table->timestamps();
+        Schema::create('motors', function (Blueprint $collection) {
+            $collection->id();
+            $collection->string('nama_motor', 15);
+            $collection->string('mesin', 10);
+            $collection->string('tipe_suspensi', 20);
+            $collection->string('tipe_transmisi', 10);
+            $collection->enum('status',['ready', 'terjual'])->default('ready'); 
+            $collection->date('tanggal_terjual'); 
+            $collection->foreignId('kendaraan_id')->constrained('kendaraans');
+            $collection->timestamps();
         });
     }
 

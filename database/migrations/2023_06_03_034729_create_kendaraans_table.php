@@ -16,8 +16,8 @@ class CreateKendaraansTable extends Migration
         Schema::create('kendaraans', function (Blueprint $collection) {
             $collection->id();
             $collection->date('tahun_keluaran');
-            $collection->string('warna');
-            $collection->int('harga');
+            $collection->string('warna', 10);
+            $collection->int('harga', 10); 
             $collection->timestamps();
         });
     }

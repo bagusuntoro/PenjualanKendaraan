@@ -12,7 +12,7 @@ class Kendaraan extends Model
     protected $table = 'kendaraans';
 
     protected $fillable = [
-        'tahun',
+        'tahun_keluaran',
         'warna',
         'harga',
     ];
