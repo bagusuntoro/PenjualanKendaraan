@@ -19,58 +19,57 @@ class PenjualanKendaraanRepository
         $this->motor = $motor;
     }
 
-    public function listAllKendaraan() //list untuk semua kendaraan
+    public function listAllKendaraan()
     {
-        $mobil = $this->mobil->get();
-        $motor = $this->motor->get();
+        // $mobil = $this->mobil->get();
+        // $motor = $this->motor->get();
 
-        return $mobil->concat($motor);
+        // return $mobil->concat($motor);
+        return $this->kendaraan->get();
     }
 
-    public function listKendaraanMobil() //list untuk kendaraan mobil
+    public function listKendaraanMobil()
     {
         return $this->mobil->get();
     }
 
+    
 
-    public function listKendaraanMotor() //list kendaraan untuk motor
+    public function listKendaraanMotor()
     {
         return $this->motor->get();
     }
 
-    public function penjualanMobil($id, array $data) //penjualan mobil
+    public function penjualanMobil($id, array $data)
     {
-
         $dataPenjualanMobil = $this->mobil->find($id);
-        $dataPenjualanMobil->status = $data->status;
-        $dataPenjualanMobil->tanggal_terjual = $data->date;
+        $dataPenjualanMobil->status = $data['status'];
+        $dataPenjualanMobil->tanggal_terjual = $data['date'];
         $dataPenjualanMobil->save();
 
         return $dataPenjualanMobil;
-    }    
+    }
 
-    public function penjualanMotor($id) //penjualan motor
+    public function penjualanMotor($id, array $data)
     {
         $dataPenjualanMotor = $this->motor->find($id);
-        $dataPenjualanMotor->status = $data->status;
-        $dataPenjualanMotor->tanggal_terjual = $data->date;
+        $dataPenjualanMotor->status = $data['status'];
+        $dataPenjualanMotor->tanggal_terjual = $data['date'];
         $dataPenjualanMotor->save();
 
         return $dataPenjualanMotor;
-    }    
-
-    public function laporanPenjualanMobil() //laporan penjualan mobil
-    {
-        return $this->mobil->where('status','terjual')->get();
     }
 
-    public function laporanPenjualanMotor() //laporan penjualan motor
+    public function laporanPenjualanMobil()
+    {
+        return $this->mobil->where('status', 'terjual')->get();
+    }
+
+    public function laporanPenjualanMotor()
     {
         return $this->motor->where('status', 'terjual')->get();
     }
 
-
-    // fitur tambahan
     public function menambahkanKendaraan(array $data)
     {
         $dataKendaraan = $this->kendaraan->create($data);

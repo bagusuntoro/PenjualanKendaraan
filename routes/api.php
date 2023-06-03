@@ -9,8 +9,8 @@ Route::get('list-mobil', [PenjualanKendaraanController::class,'listKendaraanMobi
 Route::get('list-motor', [PenjualanKendaraanController::class,'listKendaraanMotor']);
 
 
-Route::get('beli-mobil/{id}', [PenjualanKendaraanController::class,'penjualanMobil']);
-Route::get('beli-motor/{id}', [PenjualanKendaraanController::class,'penjualanMotor']);
+Route::put('beli-mobil/{id}', [PenjualanKendaraanController::class,'penjualanMobil']);
+Route::put('beli-motor/{id}', [PenjualanKendaraanController::class,'penjualanMotor']);
 
 Route::get('laporan-penjualan-mobil', [PenjualanKendaraanController::class,'laporanPenjualanMobil']);
 Route::get('laporan-penjualan-motor', [PenjualanKendaraanController::class,'laporanPenjualanMotor']);
