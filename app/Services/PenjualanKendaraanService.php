@@ -60,14 +60,23 @@ class PenjualanKendaraanService
 
     public function menambahkanMobil(Request $request)
     {
-        $dataMobil = $request->only(['nama_mobil', 'mesin', 'kapasitas_penumpang', 'tipe', 'id_kendaraan', 'status'=>'ready']);
-        return $this->penjualanKendaraanRepository->menambahkanMobil($dataMobil);
+        $dataKendaraan = $this->detailKendaraan($request->id_kendaraan);
+        if ($dataKendaraan) { //periksa apakah id kendaraan valid
+            $dataMobil = $request->only(['nama_mobil', 'mesin', 'kapasitas_penumpang', 'tipe', 'id_kendaraan', 'status'=>'ready']);
+            return $this->penjualanKendaraanRepository->menambahkanMobil($dataMobil);
+        }
+
+        return 'kendaraan tidak valid';
     }
 
     public function menambahkanMotor(Request $request)
     {
-        $dataMotor = $request->only(['nama_motor', 'mesin', 'tipe_suspensi', 'tipe_transmisi', 'id_kendaraan']);
-        return $this->penjualanKendaraanRepository->menambahkanMotor($dataMotor);
+        $dataKendaraan = $this->detailKendaraan($request->id_kendaraan);
+        if($dataKendaraan){
+            $dataMotor = $request->only(['nama_motor', 'mesin', 'tipe_suspensi', 'tipe_transmisi', 'id_kendaraan']);
+            return $this->penjualanKendaraanRepository->menambahkanMotor($dataMotor);
+        }   
+        return 'kendaraan tidak valid';
     }
 
     public function detailKendaraan($id)
@@ -94,9 +103,13 @@ class PenjualanKendaraanService
     public function updateMobil(Request $request, $id)
     {
         $dataMobil = $this->detailMobil($id);
-        if (!$dataMobil->status) {
-            $dataMobil = $request->only(['nama_mobil', 'mesin', 'kapasitas_penumpang', 'tipe', 'id_kendaraan']);
-            return $this->penjualanKendaraanRepository->updateMobil($dataMobil, $id);   
+        if (!$dataMobil->status) { //cek apakah mobil dengan id tersebut ada?
+            $dataKendaraan = $this->detailKendaraan($request->id_kendaraan);
+            if ($dataKendaraan) { //cek apakah id kendaraan valid?
+                $dataMobil = $request->only(['nama_mobil', 'mesin', 'kapasitas_penumpang', 'tipe', 'id_kendaraan']);
+                return $this->penjualanKendaraanRepository->updateMobil($dataMobil, $id);   
+            }
+            return 'kendaraan tidak valid';
         }else {
             return 'tidak bisa mengupdate mobil yang sudah terjual';
         }
@@ -105,9 +118,13 @@ class PenjualanKendaraanService
     public function updateMotor(Request $request, $id)
     {
         $dataMotor = $this->detailMotor($id);
-        if(!$dataMotor->status){
-            $dataMotor = $request->only(['nama_motor', 'mesin', 'tipe_suspensi', 'tipe_transmisi', 'id_kendaraan']);
-            return $this->penjualanKendaraanRepository->updateMotor($dataMotor, $id);   
+        if(!$dataMotor->status){ // cek apakah motor dengan id tersebut ada ?
+            $dataKendaraan = $this->detailKendaraan($request->id_kendaraan);
+            if ($dataKendaraan) { // cek apakah id kendaraan valid?
+                $dataMotor = $request->only(['nama_motor', 'mesin', 'tipe_suspensi', 'tipe_transmisi', 'id_kendaraan']);
+                return $this->penjualanKendaraanRepository->updateMotor($dataMotor, $id);   
+            }
+            return 'kendaraan tidak valid';
         }else{
             return 'tidak bisa mengupdate motor yang sudah terjual';
         }

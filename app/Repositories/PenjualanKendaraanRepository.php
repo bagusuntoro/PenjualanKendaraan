@@ -108,7 +108,7 @@ class PenjualanKendaraanRepository
 
     public function detailKendaraan($id)
     {
-        $dataKendaraan = $this->motor->find($id);
+        $dataKendaraan = $this->kendaraan->find($id);
 
         return $dataKendaraan;
     }
