@@ -19,7 +19,7 @@ class CreateMobilsTable extends Migration
             $collection->string('mesin', 10);
             $collection->integer('kapasitas_penumpang');
             $collection->string('tipe', 10);
-            $collection->enum('status', ['ready', 'terjual'])->default('ready');
+            $collection->string('status');
             $collection->date('tanggal_terjual')->nullable();
             $collection->foreignId('kendaraan_id')->constrained('kendaraans');
             $collection->timestamps();

@@ -60,7 +60,7 @@ class PenjualanKendaraanService
 
     public function menambahkanMobil(Request $request)
     {
-        $dataMobil = $request->only(['nama_mobil', 'mesin', 'kapasitas_penumpang', 'tipe', 'id_kendaraan']);
+        $dataMobil = $request->only(['nama_mobil', 'mesin', 'kapasitas_penumpang', 'tipe', 'id_kendaraan', 'status'=>'ready']);
         return $this->penjualanKendaraanRepository->menambahkanMobil($dataMobil);
     }
 
@@ -70,6 +70,52 @@ class PenjualanKendaraanService
         return $this->penjualanKendaraanRepository->menambahkanMotor($dataMotor);
     }
 
+    public function detailKendaraan($id)
+    {
+        return $this->penjualanKendaraanRepository->detailKendaraan($id);
+    }
+
+    public function detailMobil($id)
+    {
+        return $this->penjualanKendaraanRepository->detailMobil($id);
+    }
+
+    public function detailMotor($id)
+    {
+        return $this->penjualanKendaraanRepository->detailMotor($id);
+    }
+
+    public function updateKendaraan(Request $request, $id)
+    {
+        $dataKendaraan = $request->only(['tahun_keluaran', 'warna', 'harga']);
+        return $this->penjualanKendaraanRepository->updateKendaraan($dataKendaraan, $id);   
+    }
+
+    public function updateMobil(Request $request, $id)
+    {
+        $dataMobil = $this->detailMobil($id);
+        if (!$dataMobil->status) {
+            $dataMobil = $request->only(['nama_mobil', 'mesin', 'kapasitas_penumpang', 'tipe', 'id_kendaraan']);
+            return $this->penjualanKendaraanRepository->updateMobil($dataMobil, $id);   
+        }else {
+            return 'tidak bisa mengupdate mobil yang sudah terjual';
+        }
+    }
+
+    public function updateMotor(Request $request, $id)
+    {
+        $dataMotor = $this->detailMotor($id);
+        if(!$dataMotor->status){
+            $dataMotor = $request->only(['nama_motor', 'mesin', 'tipe_suspensi', 'tipe_transmisi', 'id_kendaraan']);
+            return $this->penjualanKendaraanRepository->updateMotor($dataMotor, $id);   
+        }else{
+            return 'tidak bisa mengupdate motor yang sudah terjual';
+        }
+    }
+
+
+
+    // untuk ngeset status kendaraan dan tanggal dibeli
     private function generatePenjualanData()
     {
         $now = Carbon::now('Asia/Jakarta');
