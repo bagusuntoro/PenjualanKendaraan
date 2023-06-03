@@ -8,4 +8,22 @@ use Jenssegers\Mongodb\Eloquent\Model;
 class Kendaraan extends Model
 {
     use HasFactory;
+
+    protected $table = 'kendaraans';
+
+    protected $fillable = [
+        'tahun',
+        'warna',
+        'harga',
+    ];
+
+    public function motor()
+    {
+        return $this->hasOne(Motor::class);
+    }
+
+    public function mobil()
+    {
+        return $this->hasOne(Mobil::class);
+    }
 }
