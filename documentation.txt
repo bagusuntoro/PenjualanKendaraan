@@ -1,0 +1,4 @@
+"message": "Call to a member function prepare() on null",
+"exception": "Error",
+penyelesaian: lupa import Jenssegers\Mongodb\Auth\User di model User
+
