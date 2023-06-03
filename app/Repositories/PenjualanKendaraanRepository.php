@@ -148,7 +148,25 @@ class PenjualanKendaraanRepository
         return $dataMotor;
     }
 
+    public function deleteMobil($id)
+    {
+        $dataMobil = $this->mobil->find($id);
+        if ($dataMobil) {
+            $dataMobil->delete();
+            return 'data berhasil dihapus';
+        }
+        return 'data tidak ditemukan!!';
+    }
 
+    public function deleteMotor($id)
+    {
+        $dataMotor = $this->motor->find($id);
+        if ($dataMotor) {
+            $dataMotor->delete();
+            return 'data berhasil dihapus';
+        }
+        return 'data tidak ditemukan!!';
+    }
 
 
 }
