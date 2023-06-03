@@ -14,13 +14,13 @@ class CreateMobilsTable extends Migration
     public function up()
     {
         Schema::create('mobils', function (Blueprint $collection) {
-            $collection->id();
+            $collection->index('id');
             $collection->string('nama_mobil', 15);
             $collection->string('mesin', 10);
-            $collection->int('kapasitas_penumpang', 2);
+            $collection->integer('kapasitas_penumpang');
             $collection->string('tipe', 10);
-            $collection->enum('status',['ready', 'terjual'])->default('ready'); 
-            $collection->date('tanggal_terjual')->default(null); 
+            $collection->enum('status', ['ready', 'terjual'])->default('ready');
+            $collection->date('tanggal_terjual')->nullable();
             $collection->foreignId('kendaraan_id')->constrained('kendaraans');
             $collection->timestamps();
         });

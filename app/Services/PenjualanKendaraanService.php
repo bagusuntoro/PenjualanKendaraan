@@ -15,84 +15,70 @@ class PenjualanKendaraanService
         $this->penjualanKendaraanRepository = $penjualanKendaraanRepository;
     }
 
-    public function listAllKendaraan() //list untuk semua kendaraan
+    public function listAllKendaraan()
     {
         return $this->penjualanKendaraanRepository->listAllKendaraan();
     }
 
-    public function listKendaraanMobil() //list untuk kendaraan mobil
+    public function listKendaraanMobil()
     {
         return $this->penjualanKendaraanRepository->listKendaraanMobil();
     }
 
-
-    public function listKendaraanMotor() //list kendaraan untuk motor
+    public function listKendaraanMotor()
     {
         return $this->penjualanKendaraanRepository->listKendaraanMotor();
     }
 
-    public function penjualanMobil($id) //penjualan mobil
+    public function penjualanMobil($id)
     {
-        $dataPenjualanMobil = [
-            'status' => 'terjual',
-            'date' => Carbon::now(),
-        ];
+        $dataPenjualanMobil = $this->generatePenjualanData();
         return $this->penjualanKendaraanRepository->penjualanMobil($id, $dataPenjualanMobil);
-    }    
+    }
 
-    public function penjualanMotor($id) //penjualan motor
+    public function penjualanMotor($id)
     {
-        $dataPenjualanMotor = [
-            'status' => 'terjual',
-            'date' => Carbon::now(),
-        ];
+        $dataPenjualanMotor = $this->generatePenjualanData();
         return $this->penjualanKendaraanRepository->penjualanMotor($id, $dataPenjualanMotor);
-    }    
+    }
 
-    public function laporanPenjualanMobil() //laporan penjualan mobil
+    public function laporanPenjualanMobil()
     {
         return $this->penjualanKendaraanRepository->laporanPenjualanMobil();
     }
 
-    public function laporanPenjualanMotor() //laporan penjualan motor
+    public function laporanPenjualanMotor()
     {
         return $this->penjualanKendaraanRepository->laporanPenjualanMotor();
     }
 
-
-    // fitur tambahan
     public function menambahkanKendaraan(Request $request)
     {
-        $dataKendaraan = [
-            'tahun_keluaran' => $request->tahun_keluaran,
-            'warna' => $request->warna,
-            'harga' => $request->harga
-        ];
-
+        $dataKendaraan = $request->only(['tahun_keluaran', 'warna', 'harga']);
         return $this->penjualanKendaraanRepository->menambahkanKendaraan($dataKendaraan);
     }
 
     public function menambahkanMobil(Request $request)
     {
-        $dataMobil = [
-            'nama_mobil' => $request->nama_mobil,
-            'mesin' => $request->mesin,
-            'kapasitas_penumpang' => $request->kapasitas_penumpang,
-            'tipe' => $request->tipe
-        ];
-
+        $dataMobil = $request->only(['nama_mobil', 'mesin', 'kapasitas_penumpang', 'tipe', 'id_kendaraan']);
         return $this->penjualanKendaraanRepository->menambahkanMobil($dataMobil);
     }
 
     public function menambahkanMotor(Request $request)
     {
-        $dataMotor = [
-            'nama_motor' => $request->nama_motor,
-            'mesin' => $request->mesin,
-            'tipe_suspensi' => $request->tipe_suspensi,
-            'tipe_transmisi' => $request->tipe_transmisi
-        ];
-
+        $dataMotor = $request->only(['nama_motor', 'mesin', 'tipe_suspensi', 'tipe_transmisi', 'id_kendaraan']);
         return $this->penjualanKendaraanRepository->menambahkanMotor($dataMotor);
     }
+
+    private function generatePenjualanData()
+    {
+        $now = Carbon::now('Asia/Jakarta');
+        $formattedDate = $now->format('d/m/Y');
+    
+        return [
+            'status' => 'terjual',
+            'date' => $formattedDate,
+        ];
+    }
+    
 }
