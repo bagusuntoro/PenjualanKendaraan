@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Repositories;
 
 use App\Models\Kendaraan;
@@ -19,154 +18,167 @@ class PenjualanKendaraanRepository
         $this->motor = $motor;
     }
 
+    // awal list
     public function listAllKendaraan()
     {
-        // $mobil = $this->mobil->get();
-        // $motor = $this->motor->get();
-
-        // return $mobil->concat($motor);
         return $this->kendaraan->get();
     }
 
     public function listKendaraanMobil()
     {
-        return $this->mobil->get(['_id', 'nama_mobil']);
+        return $this->mobil->select('_id', 'nama_mobil')->get();
     }
-
-    
 
     public function listKendaraanMotor()
     {
-        return $this->motor->get(['_id', 'nama_motor']);
+        return $this->motor->select('_id', 'nama_motor')->get();
+    } //akhir list
+
+
+
+
+
+    public function penjualanKendaraan($id, array $data, $model) //method ini dugunakan untuk penjualan
+    {
+        $dataPenjualan = $model->find($id);
+
+        if ($dataPenjualan && !$dataPenjualan->status) {
+            $dataPenjualan->status = $data['status'];
+            $dataPenjualan->tanggal_terjual = $data['date'];
+            $dataPenjualan->save();
+
+            return $dataPenjualan;
+        }
+
+        return 'kendaraan tidak tersedia';
     }
 
     public function penjualanMobil($id, array $data)
     {
-        $dataPenjualanMobil = $this->mobil->find($id);
-
-        // hanya bisa membeli mobil yang statusnya ready
-        if ($dataPenjualanMobil && !$dataPenjualanMobil->status) {
-            $dataPenjualanMobil->status = $data['status'];
-            $dataPenjualanMobil->tanggal_terjual = $data['date'];
-            $dataPenjualanMobil->save();
-
-            return $dataPenjualanMobil;
-        }
-
-        // selain itu mobil tidak bisa dibeli
-        return 'mobil tidak tersedia';
+        return $this->penjualanKendaraan($id, $data, $this->mobil);
     }
 
     public function penjualanMotor($id, array $data)
     {
-        $dataPenjualanMotor = $this->motor->find($id);
+        return $this->penjualanKendaraan($id, $data, $this->motor);
+    } //akhir penjualan
 
-        if ($dataPenjualanMotor && !$dataPenjualanMotor->status) {
-            $dataPenjualanMotor->status = $data['status'];
-            $dataPenjualanMotor->tanggal_terjual = $data['date'];
-            $dataPenjualanMotor->save();
-    
-            return $dataPenjualanMotor;           
-        }
 
-        // selain itu motor tidak bisa dibeli
-        return 'motor tidak tersedia';
+
+
+
+
+    public function laporanPenjualan($model) //method digunakan untuk laporan
+    {
+        return $model->where('status', 'terjual')->get();
     }
 
     public function laporanPenjualanMobil()
     {
-        // laporan hanya menampilkan data mobil yang statusnya terjual
-        return $this->mobil->where('status', 'terjual')->get();
+        return $this->laporanPenjualan($this->mobil);
     }
 
     public function laporanPenjualanMotor()
     {
-        // laporan hanya menampilkan data motor yang statusnya terjual
-        return $this->motor->where('status', 'terjual')->get();
+        return $this->laporanPenjualan($this->motor);
+    } //akhir laporan
+
+
+
+    
+
+    public function createData($model, array $data) //method digunakan untuk membuat data
+    {
+        return $model->create($data);
     }
 
-    // menambahkan kendaraan
     public function menambahkanKendaraan(array $data)
     {
-        $dataKendaraan = $this->kendaraan->create($data);
-        return $dataKendaraan;
+        return $this->createData($this->kendaraan, $data);
     }
 
-    // menambahkan mobil
     public function menambahkanMobil(array $data)
     {
-        $dataMobil = $this->mobil->create($data);
-        return $dataMobil;
+        return $this->createData($this->mobil, $data);
     }
 
-    // menambahkan motor
     public function menambahkanMotor(array $data)
     {
-        $dataMotor = $this->motor->create($data);
-        return $dataMotor;
+        return $this->createData($this->motor, $data);
+    } //akhir dari pembuatan data
+
+
+
+
+
+    public function getDetail($model, $id)  // method digunakan untuk mengambil data detail
+    {
+        return $model->find($id);
     }
 
     public function detailKendaraan($id)
     {
-        $dataKendaraan = $this->motor->find($id);
-
-        return $dataKendaraan;
+        return $this->getDetail($this->kendaraan, $id);
     }
 
     public function detailMobil($id)
     {
-        $dataMobil = $this->mobil->find($id);
-        return $dataMobil;
+        return $this->getDetail($this->mobil, $id);
     }
 
     public function detailMotor($id)
     {
-        $dataMotor = $this->motor->find($id);
+        return $this->getDetail($this->motor, $id);
+    }//akhir dari detail data
 
-        return $dataMotor;
+
+
+
+    public function updateData($model, array $data, $id) //method digunakan untuk update data
+    {
+        $dataModel = $model->find($id);
+        $dataModel->update($data);
+
+        return $dataModel;
     }
 
     public function updateKendaraan(array $data, $id)
     {
-        $dataKendaraan = $this->kendaraan->find($id);
-        $dataKendaraan->update($data);
-        
-        return $dataKendaraan;
+        return $this->updateData($this->kendaraan, $data, $id);
     }
+
     public function updateMobil(array $data, $id)
     {
-        $dataMobil = $this->mobil->find($id);
-        $dataMobil->update($data);
-        
-        return $dataMobil;
+        return $this->updateData($this->mobil, $data, $id);
     }
+
     public function updateMotor(array $data, $id)
     {
-        $dataMotor = $this->motor->find($id);
-        $dataMotor->update($data);
-        
-        return $dataMotor;
+        return $this->updateData($this->motor, $data, $id);
+    } //akhir dari update data
+
+
+
+
+    public function deleteData($model, $id) //method ini digunakan untuk delete data
+    {
+        $dataModel = $model->find($id);
+
+        if ($dataModel) {
+            $dataModel->delete();
+            return 'data berhasil dihapus';
+        }
+
+        return 'data tidak ditemukan!!';
     }
 
     public function deleteMobil($id)
     {
-        $dataMobil = $this->mobil->find($id);
-        if ($dataMobil) {
-            $dataMobil->delete();
-            return 'data berhasil dihapus';
-        }
-        return 'data tidak ditemukan!!';
+        return $this->deleteData($this->mobil, $id);
     }
 
     public function deleteMotor($id)
     {
-        $dataMotor = $this->motor->find($id);
-        if ($dataMotor) {
-            $dataMotor->delete();
-            return 'data berhasil dihapus';
-        }
-        return 'data tidak ditemukan!!';
-    }
-
-
+        return $this->deleteData($this->motor, $id);
+    } //akhir dari delete data
 }
